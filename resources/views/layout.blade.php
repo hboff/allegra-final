@@ -27,8 +27,14 @@
         </div>
     </nav>
     @yield('content')
-
+    @if(str_contains(url()->current(), "/immobilienbewertung"))
+    @include('partials.footer2')
+    @if(str_contains(url()->current(), "/immobilienbewertungen"))
+    @include('partials.footer3')
+    @else
     @include('partials.footer')
+    @endif
+
     </footer>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/aos.min.js"></script>
