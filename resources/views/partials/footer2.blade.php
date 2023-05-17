@@ -56,7 +56,7 @@
 @foreach ($nearestCities as $cities)
 @if($ortsname == $cities->stadt_umlaut)
 @else
-<li><a href="/{{$cities->stadt_umlaut}}/bausachverstaendiger" class="link-dark">Baugutachter {{$cities->stadt}}</a></li>
+<li><a href="/{{$cities->ort_umlaut}}/bausachverstaendiger" class="link-dark">Baugutachter {{$cities->ort}}</a></li>
 @endif
 @endforeach
 @endisset

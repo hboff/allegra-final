@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrteController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,28 +14,45 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+$routes = [
+    'verkehrswertverfahren',
+    'impressum',
+    'datenschutzerklaerung',
+    'ertragswertverfahren',
+    'gewerbeimmobilien',
+    'grundstuecke-und-rechte',
+    'landwirtschaftliche-immobilien',
+    'sachwertverfahren',
+    'sonderimmobilien',
+    'ueber-uns',
+    'wohnimmobilien',
+    'startseite',
+    
+];
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/gewerbeimmobilien', function () {
-    return view('gewerbeimmobilien');
-});
-Route::get('/grundstuecke-und-rechte', function () {
-    return view('grundstuecke-und-rechte');
-});
-Route::get('/immobilienbewertung', function () {
-    return view('immobilienbewerutng');
-});
-Route::get('/landwirtschaftliche-immobilien', function () {
-    return view('landwirtschaftliche-immobilien');
-});
-Route::get('/sonderimmobilien', function () {
-    return view('sonderimmobilien');
-});
-Route::get('/ueber-uns', function () {
-    return view('ueber-uns');
-});
-Route::get('/wohnimmobilien', function () {
-    return view('wohnimmobilien');
-});
+$domains = [
+    'allegra-immobilienbewertung.de' => [
+        'laengengrad' => [1.0, 14.0],
+        'breitengrad' => [10.0, 54.0],
+    ],
+
+];
+
+foreach ($domains as $domain => $domainData) {
+    Route::domain($domain)->group(function () use ($routes, $domainData) {
+        Route::get('/', [OrteController::class, 'index']);
+        Route::get('/immobilienbewertung/{ort}', [OrteController::class, 'show'], function () use ($domainData) {});
+        Route::get('/immobilienbewertungen/{region}', function($region){
+            return view ('immobilienbewertungen', ['ortsname' => $region]);
+    });
+        Route::get('contact-us', [ContactController::class, 'index']);
+        Route::post('contact-us', [ContactController::class, 'store'])->name('contact.us.store');
+
+    foreach ($routes as $route) {
+    Route::get($route, function () use ($route, $domainData) {
+    
+    return view($route);
+    });
+    }
+    });
+    }
